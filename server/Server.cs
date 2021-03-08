@@ -1,7 +1,9 @@
 using System;
 using System.Net.Sockets;
-using System.IO;
 using System.Text;
+
+using protocol;
+using protocol.messages;
 
 namespace server
 {
@@ -35,8 +37,11 @@ namespace server
                     string recived = Request(_socket);
                     Console.WriteLine("Request : " + recived); 
 
-                    Console.WriteLine("Response : " + recived);
-                    Response(recived, _socket);
+                    var response = MessageHandler.Handle(recived);
+
+                    Console.WriteLine("Response : " + response);
+
+                    Response(response, _socket);
                 }
             } catch (Exception e)
             {

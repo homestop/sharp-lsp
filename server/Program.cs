@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 
 namespace server
 {
@@ -12,7 +13,13 @@ namespace server
             };
 
             Server server = new Server(config);
-            server.Listen();
+
+            while (true)
+            {
+                server.Listen();
+
+                Console.WriteLine("Retrying...");
+            }
         }
     }
 }

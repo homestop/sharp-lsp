@@ -32,9 +32,11 @@ namespace server
 
                 while (isLostConnection(_socket))
                 {
-                    string recived = Reader(_socket);
+                    string recived = Request(_socket);
+                    Console.WriteLine("Request : " + recived); 
 
-                    Console.WriteLine("Accepted : " + recived); 
+                    Console.WriteLine("Response : " + recived);
+                    Response(recived, _socket);
                 }
             } catch (Exception e)
             {
@@ -46,16 +48,18 @@ namespace server
             _listener.Stop();
         }
 
-        private string Reader(Socket socket)
+        private string Request(Socket socket)
         {
-            byte[] bytes = new byte[124];
-
+            byte[] bytes = new byte[1024];
+                
             return Encoding.ASCII.GetString(bytes, 0, socket.Receive(bytes));
         }
 
-        private bool Writer(Socket socket)
+        private void Response (string message, Socket socket)
         {
-            return true;
+            // TODO: Here must be implemented lsp protocol messages 
+
+            socket.Send(new ASCIIEncoding().GetBytes(message));
         }
 
         private bool isLostConnection (Socket socket)

@@ -1,5 +1,7 @@
 using System;
 using System.Net.Sockets;
+using System.IO;
+using System.Text;
 
 namespace server
 {
@@ -15,7 +17,7 @@ namespace server
             this.config = (Config)config;
         }
 
-        public bool Listen ()
+        public void Listen ()
         {
             Console.WriteLine("Start listening on "
                               + config.address + ":"
@@ -30,15 +32,29 @@ namespace server
 
                 while (isLostConnection(_socket))
                 {
-                    Console.WriteLine("Accepted...");
-                }
+                    string recived = Reader(_socket);
 
-                Console.WriteLine("Connection was lost...");
+                    Console.WriteLine("Accepted : " + recived); 
+                }
             } catch (Exception e)
             {
                 Console.WriteLine(e);
-                return false;
             }
+
+            Console.WriteLine("Connection was lost...");
+            _socket.Close();
+            _listener.Stop();
+        }
+
+        private string Reader(Socket socket)
+        {
+            byte[] bytes = new byte[124];
+
+            return Encoding.ASCII.GetString(bytes, 0, socket.Receive(bytes));
+        }
+
+        private bool Writer(Socket socket)
+        {
             return true;
         }
 

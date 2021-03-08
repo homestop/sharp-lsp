@@ -2,6 +2,8 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.IO;
+using System.Text;
 
 namespace client
 {
@@ -14,12 +16,17 @@ namespace client
 
             int i = 0;
 
+            StreamWriter writer = new StreamWriter(client.GetStream(),
+                                                   Encoding.ASCII);
+
             while (i < 5)
             {
-                Console.WriteLine("Waiting");
+                i++;
+
+                writer.Write("31123213j12o312ij31io32" + i);
+                writer.Flush();
 
                 Thread.Sleep(2000);
-                i++;
             }
             client.Close();
         }

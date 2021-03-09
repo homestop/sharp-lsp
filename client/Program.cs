@@ -23,7 +23,7 @@ namespace client
             string json =  @"{
 'jsonrpc': '2.0',
 'id': 1,
-'method': 'textDocument'
+'method': 'textDocument/didOpen'
 }";
 
             while (true)

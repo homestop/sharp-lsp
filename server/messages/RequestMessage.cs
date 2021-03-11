@@ -1,13 +1,17 @@
-namespace protocol
+using System;
+
+namespace messages
 {
-    namespace messages
+    public class RequestMessage : Message
     {
-        public class RequestMessage : IMessage
+        public RequestMessage (string json)
+            : base (json)
+        {}
+
+        public override void Action ()
         {
-            public int id { get; set; }
-            public string jsonrpc { get; set; }
-            public string method { get; set; }
-            // Should like that: params?: array | object;
+            Parse();
+            // HERE: Should be logic
         }
     }
 }

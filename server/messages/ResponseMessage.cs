@@ -1,21 +1,19 @@
-namespace protocol
+namespace messages
 {
-    namespace messages
+    // public class ResponseMessage : IMessage
+    // {
+    //     public string jsonrpc { get; set; }
+    //     public string result { get; set; }
+    //     public ResponseError error { get; set; }
+    // }
+
+    public class ResponseError
     {
-        public class ResponseMessage : IMessage
-        {
-            public string jsonrpc { get; set; }
-            public string result { get; set; }
-            public ResponseError error { get; set; }
-        }
+        public int code { get; set; } 
+        public string message { get; set; }
+    }
 
-        public class ResponseError
-        {
-            public int code { get; set; } 
-            public string message { get; set; }
-        }
-
-        public enum ErrorCode
+    public enum ErrorCode
         {
             ParseError = -32700,
 
@@ -28,5 +26,4 @@ namespace protocol
             UnknowErrorCode = -32001,
             jsonrpcReservedErrorRangeEnd = 32000
         }
-    }
 }

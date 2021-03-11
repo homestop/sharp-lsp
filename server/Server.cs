@@ -1,9 +1,7 @@
 using System;
 using System.Net.Sockets;
 using System.Text;
-
-using protocol;
-using protocol.messages;
+using messages;
 
 namespace server
 {
@@ -34,14 +32,24 @@ namespace server
 
                 while (isLostConnection(_socket))
                 {
-                    string recived = Request(_socket);
-                    Console.WriteLine("Request : " + recived); 
+                    Message i = new RequestMessage(Request(_socket));
+                    i.Action();
+                    Console.WriteLine($"Requset : {i.json}");
 
-                    var response = MessageHandler.Handle(recived);
-
-                    Console.WriteLine("Response : " + response);
-
-                    Response(response, _socket);
+                    switch(i.method)
+                    {
+                        case "init":
+                            Console.WriteLine("init");
+                            break;
+                        case "":
+                            Console.WriteLine("None");
+                            break;
+                          
+                        default:
+                            Console.WriteLine("Default");
+                            break;
+                    }
+                    // Response(response, _socket);
                 }
             } catch (Exception e)
             {

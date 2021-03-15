@@ -1,8 +1,8 @@
 using Newtonsoft.Json.Linq;
 
-namespace messages
+namespace message
 {
-    internal interface IMessage
+    interface IMessage
     {
         public string json { get; set; }
         public string jsonrpc { get; set; }
@@ -21,7 +21,7 @@ namespace messages
         public int id { get; set; }
         public string method { get; set; }
 
-        public Message (string json) => this.json = json;
+        // public Message (string json) => this.json = json;
 
         public abstract void Action ();
 
@@ -33,7 +33,37 @@ namespace messages
             this.jsonrpc = (string)tokens["jsonrpc"];
             this.method = (string)tokens["method"];
         }
-
     }
 
+    public class MessageFactory
+    {
+        public static Message GetMessage (string method)
+        {
+            switch(method)
+            {
+                case "initialize": 
+                    return new MessageInitialize();
+
+                case "textDocument/didOpen":
+                    return new MessageTextDocumentDidOpen(); 
+
+                default:
+                    return null;
+            }
+        }
+    }
+
+    public enum ErrorCode
+        {
+            ParseError = -32700,
+
+            InvalidRequest = -32600,
+            MethodNotFound = -32601,
+            InvalidParams = -32602,
+            InternalError = -32603,
+
+            ServerNotInitialized = -32002,
+            UnknowErrorCode = -32001,
+            jsonrpcReservedErrorRangeEnd = 32000
+        }
 }

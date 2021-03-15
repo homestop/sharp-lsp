@@ -1,7 +1,8 @@
 using System;
 using System.Net.Sockets;
 using System.Text;
-using messages;
+
+using message;
 
 namespace server
 {
@@ -32,24 +33,19 @@ namespace server
 
                 while (isLostConnection(_socket))
                 {
-                    Message i = new RequestMessage(Request(_socket));
-                    i.Action();
-                    Console.WriteLine($"Requset : {i.json}");
-
-                    switch(i.method)
+                    using (MessageSerializer serializer = new MessageSerializer())
                     {
-                        case "init":
-                            Console.WriteLine("init");
-                            break;
-                        case "":
-                            Console.WriteLine("None");
-                            break;
-                          
-                        default:
-                            Console.WriteLine("Default");
-                            break;
+                        var json = Request(_socket);
+                        var method = serializer.getMethod(json); 
+
+                        Message request = MessageFactory.GetMessage(method);
+                        request.json = json;
+                        request.Parse();
+
+                        Console.WriteLine("Request method : " + request.method);
+                        
+                        Response("", _socket);
                     }
-                    // Response(response, _socket);
                 }
             } catch (Exception e)
             {

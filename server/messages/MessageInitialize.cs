@@ -10,6 +10,7 @@ namespace message
 
         public override void Action ()
         {
+            this.responce = "initialize";
         }
     }
 }

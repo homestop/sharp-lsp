@@ -21,6 +21,8 @@ namespace message
         public int id { get; set; }
         public string method { get; set; }
 
+        public string responce { get; set; }
+        
         // public Message (string json) => this.json = json;
 
         public abstract void Action ();
@@ -35,7 +37,7 @@ namespace message
         }
     }
 
-    public class MessageFactory
+    public class MessageProvider
     {
         public static Message GetMessage (string method)
         {

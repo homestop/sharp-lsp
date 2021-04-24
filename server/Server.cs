@@ -38,13 +38,14 @@ namespace server
                         var json = Request(_socket);
                         var method = serializer.getMethod(json); 
 
-                        Message request = MessageFactory.GetMessage(method);
+                        Message request = MessageProvider.GetMessage(method);
                         request.json = json;
                         request.Parse();
-
-                        Console.WriteLine("Request method : " + request.method);
+                        request.Action();
                         
-                        Response("", _socket);
+                        Console.WriteLine("Request method : " + request.method);
+
+                        Response(request.responce, _socket);
                     }
                 }
             } catch (Exception e)
